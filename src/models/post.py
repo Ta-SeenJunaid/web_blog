@@ -8,13 +8,13 @@ import datetime
 
 class Post(object):
 
-    def _init__(self, blog_id, title, content, author, created_date=datetime.datetime.utcnow(), id=None):
+    def _init__(self, blog_id, title, content, author, created_date=datetime.datetime.utcnow(), _id=None):
         self.blog_id = blog_id
         self.title = title
         self.content = content
         self.author = author
         self.created_date = created_date
-        self._id = uuid.uuid4().hex if id is None else id
+        self._id = uuid.uuid4().hex if _id is None else _id
 
 
     def save_to_mongo(self):
