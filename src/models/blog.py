@@ -1,4 +1,4 @@
-_author_ = 'Ta-Seen Junaid'
+author = 'Ta-Seen Junaid'
 
 import uuid
 import datetime
@@ -6,21 +6,21 @@ from src.models.post import Post
 from src.common.database import Database
 
 class Blog(object):
-    def _init__(self, author, title, description, author_id, id=None):
+    def init__(self, author, title, description, author_id, _id=None):
         self.author = author
         self.author_id = author_id
         self.title = title
         self.description = description
-        self._id = uuid.uuid4().hex if id is None else id
+        self._id = uuid.uuid4().hex if _id is None else _id
 
     def new_post(self, title, content, date = datetime.datetime.utcnow()):
         post = Post(blog_id=self._id,
                     title=title,
                     content=content,
                     author=self.author,
-                    created_date=date)
-
+                    date=date)
         post.save_to_mongo()
+
 
     def get_posts(self):
         return Post.from_blog(self._id)
