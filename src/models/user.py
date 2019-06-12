@@ -1,4 +1,4 @@
-_author_ = 'Ta-Seen Junaid'
+author = 'Ta-Seen Junaid'
 
 import uuid
 import datetime
@@ -12,7 +12,7 @@ class User(object):
         self.password = password
 
     @classmethod
-    def get_by_email(cls , email):
+    def get_by_email(cls, email):
         data = Database.find_one("users",{"email":email})
         if data is not None:
             return cls(**data)
@@ -73,7 +73,7 @@ class User(object):
 
     def json(self):
         return {
-            "email": self.email
+            "email": self.email,
             "_id": self._id,
             "password": self.password
         }
