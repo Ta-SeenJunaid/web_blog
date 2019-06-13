@@ -1,4 +1,4 @@
-_author_ = 'Ta-Seen Junaid'
+__author__ = 'Ta-Seen Junaid'
 
 import  pymongo
 
