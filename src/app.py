@@ -1,10 +1,11 @@
-author = 'Ta-Seen Junaid'
+_author_ = 'Ta-Seen Junaid'
 
 from src.models.user import User
 from src.common.database import Database
 from flask import Flask, render_template, request, session
 
 app = Flask(__name__)
+app.secret_key = "junaid"
 
 @app.route('/')
 
@@ -30,4 +31,4 @@ def login_user():
 
 if __name__=='__main__':
     app.debug = True
-    app.run(port = 4995)
+    app.run(port = 4996)
