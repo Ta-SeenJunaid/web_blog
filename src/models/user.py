@@ -1,4 +1,4 @@
-author = 'Ta-Seen Junaid'
+_author_ = 'Ta-Seen Junaid'
 
 import uuid
 import datetime
@@ -6,10 +6,13 @@ from src.common.database import Database
 from src.models.blog import Blog
 from flask import session
 
+
 class User(object):
-    def __init__(self, email, password):
+    def __init__(self, email, password, _id=None):
         self.email = email
         self.password = password
+        self._id = uuid.uuid4().hex if _id is None else _id
+
 
     @classmethod
     def get_by_email(cls, email):
@@ -17,8 +20,9 @@ class User(object):
         if data is not None:
             return cls(**data)
 
+
     @classmethod
-    def get_by_id(cls,_id):
+    def get_by_id(cls, _id):
         data = Database.find_one("users",{"_id":_id})
         if data is not None:
             return cls(**data)
@@ -31,15 +35,16 @@ class User(object):
         return False
 
     @classmethod
-    def register(cls,email,password):
+    def register(cls, email, password):
         user = cls.get_by_email(email)
         if user is not None:
-            new_user = cls(email,id)
+            new_user = cls(email, password)
             new_user.save_to_mongo()
             session['email'] = email
             return True
         else:
             return False
+
 
 
     @staticmethod
@@ -50,8 +55,11 @@ class User(object):
     def logout():
         session['email'] = None
 
+
+
     def get_blogs(self):
         return Blog.find_by_author_id(self._id)
+
 
     def new_blog(self,title,description):
         blog = Blog(author=self.email,
@@ -61,14 +69,12 @@ class User(object):
 
         blog.save_to_mongo()
 
-
     @staticmethod
     def new_post(blog_id, title, content, date=datetime.datetime.utcnow()):
         blog = Blog.from_mongo(blog_id)
         blog.new_post(title=title,
                       content=content,
                       date=date)
-
 
 
     def json(self):
@@ -78,5 +84,15 @@ class User(object):
             "password": self.password
         }
 
+
+
     def save_to_mongo(self):
         Database.insert("users",self.json())
+
+
+
+
+
+
+
+
