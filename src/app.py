@@ -1,4 +1,4 @@
-_author_ = 'Ta-Seen Junaid'
+author = 'Ta-Seen Junaid'
 
 from src.models.user import User
 from src.common.database import Database
@@ -8,21 +8,39 @@ app = Flask(__name__)
 app.secret_key = "junaid"
 
 @app.route('/')
+def home_template():
+    return render_template('home.html')
 
-def hello_method():
+@app.route('/login')
+def login_template():
     return render_template('login.html')
+
+@app.route('/register')
+def register_template():
+    return render_template('register.html')
 
 @app.before_first_request
 def initialize_database():
     Database.initialize()
 
-@app.route('/login', methods = ['POST'])
+@app.route('/auth/login', methods = ['POST'])
 def login_user():
     email = request.form['email']
     password = request.form['password']
 
     if User.login_valid(email, password):
         User.login(email)
+    else:
+        session['email'] = None
+
+    return render_template("profile.html", email=session['email'])
+
+@app.route('/auth/register', methods = ['POST'])
+def register_user():
+    email = request.form['email']
+    password = request.form['password']
+
+    User.register(email, password)
 
     return render_template("profile.html", email=session['email'])
 
@@ -30,5 +48,4 @@ def login_user():
 
 
 if __name__=='__main__':
-    app.debug = True
-    app.run(port = 4996)
+    app.run(port = 4996, debug=True)
