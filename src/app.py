@@ -44,7 +44,12 @@ def register_user():
 
     return render_template("profile.html", email=session['email'])
 
+@app.route('/blogs/<string:user_id>')
+def user_blogs(user_id):
+    user = User.get_by_id(user_id)
+    blogs = user.get_blogs()
 
+    return render_template("user_blogs.html", blogs=blogs)
 
 
 if __name__=='__main__':
