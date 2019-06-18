@@ -1,6 +1,7 @@
 author = 'Ta-Seen Junaid'
 
 from src.models.user import User
+from src.models.blog import Blog
 from src.common.database import Database
 from flask import Flask, render_template, request, session
 
@@ -45,11 +46,17 @@ def register_user():
     return render_template("profile.html", email=session['email'])
 
 @app.route('/blogs/<string:user_id>')
-def user_blogs(user_id):
-    user = User.get_by_id(user_id)
+@app.route('/blogs')
+def user_blogs(user_id=None):
+    if user_id is not None:
+        user = User.get_by_id(user_id)
+    else:
+        user = User.get_by_email(session['email'])
+
     blogs = user.get_blogs()
 
-    return render_template("user_blogs.html", blogs=blogs)
+    return render_template("user_blogs.html", blogs=blogs, email = user.email)
+
 
 
 if __name__=='__main__':
