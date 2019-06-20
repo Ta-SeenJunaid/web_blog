@@ -65,4 +65,4 @@ def blog_posts(blog_id):
     return render_template('posts.html', posts=posts, blog_title=blog.title)
 
 if __name__=='__main__':
-    app.run(port = 4996, debug=True)
+    app.run(port = 4996, debug=True)S
